@@ -205,3 +205,35 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# ChromaDB
+.chroma/
+chromadb/
+
+# Model cache
+.cache/
+model_cache/
+
+# Streamlit
+.streamlit/
+
+# Google AI credentials
+google_ai_credentials.json
+
+# VS Code settings
+.vscode/
+*.code-workspace
+
+# Local development settings
+config.local.yaml
+local_config.yaml
+
+# Large model files
+*.gguf
+*.bin
+*.pt
+*.pth
+
+# Temporary files
+tmp/
+temp/
