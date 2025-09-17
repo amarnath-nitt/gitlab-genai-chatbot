@@ -26,35 +26,84 @@ st.set_page_config(
 # Custom CSS
 st.markdown("""
 <style>
+    :root {
+        --accent: #FC6D26;            /* GitLab orange */
+        --accent-2: #4285f4;          /* Google blue */
+        --text-muted: #666666;
+        --surface: #f8f9fa;
+        --soft: #f0f2f6;
+        --info-bg: #e9f5ff;
+        --info-bd: #b3e0ff;
+        --warn-bg: #fff4e5;
+        --warn-bd: #ffd199;
+        --shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --text-muted: #a3a3a3;
+            --surface: #1f2937;
+            --soft: #111827;
+            --info-bg: #0b2537;
+            --info-bd: #1f4a6e;
+            --warn-bg: #3b2a17;
+            --warn-bd: #7a4b15;
+            --shadow: 0 2px 10px rgba(0,0,0,0.25);
+        }
+    }
+
     .main-header {
         font-size: 2.5rem;
         font-weight: bold;
-        color: #FC6D26;
+        color: var(--accent);
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .subheader {
         text-align: center;
         margin-bottom: 2rem;
+        color: var(--text-muted);
     }
-    
+
     .chat-message {
         padding: 1rem;
-        border-radius: 10px;
+        border-radius: 12px;
         margin-bottom: 1rem;
-        border-left: 4px solid #FC6D26;
+        border-left: 4px solid var(--accent);
+        background: var(--surface);
+        box-shadow: var(--shadow);
     }
     
     .user-message {
-        background-color: #f0f2f6;
-        border-left-color: #FC6D26;
+        background-color: var(--soft);
+        border-left-color: var(--accent);
     }
     
     .assistant-message {
-        background-color: #e8f4fd;
-        border-left-color: #4285f4;
+        background-color: var(--info-bg);
+        border-left-color: var(--accent-2);
     }
     
     .source-link {
-        color: #FC6D26;
+        color: var(--accent);
         text-decoration: none;
     }
+    .source-link:hover { text-decoration: underline; }
+
+    /* Reusable notice blocks */
+    .notice {
+        padding: 1.25rem;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        box-shadow: var(--shadow);
+        margin-top: 1rem;
+    }
+    .notice.center { text-align: center; }
+    .notice.info { background: var(--info-bg); border-color: var(--info-bd); }
+    .notice.warning { background: var(--warn-bg); border-color: var(--warn-bd); }
+    .notice.tip { background: var(--surface); border-color: #e5e7eb; }
+    .notice h3, .notice h4 { margin: 0 0 .5rem 0; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -267,7 +316,7 @@ def main():
     # Header
     st.markdown('<h1 class="main-header">🚀 GitLab GenAI Chatbot</h1>', unsafe_allow_html=True)
     st.markdown("""
-    <div style="text-align: center; margin-bottom: 2rem; color: #666;">
+    <div class="subheader">
         Ask questions about GitLab's culture, processes, and practices.
     </div>
     """, unsafe_allow_html=True)
@@ -475,7 +524,7 @@ def main():
         # Conversation tips
         if len(st.session_state.chat_history) > 0:
             st.markdown("""
-            <div style="background-color: #f8f9fa; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+            <div class="notice tip">
                 <h4>💬 Conversation Tips</h4>
                 <ul>
                     <li>Ask follow-up questions like "Can you tell me more about that?"</li>
@@ -492,22 +541,21 @@ def main():
         
         if not session_key_available:
             st.markdown("""
-            <div style="text-align: center; padding: 2rem; background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 10px;">
-                <h3>🔑 API Key Required</h3>
-                <p>To use the GitLab GenAI Chatbot, you need a Google AI API key.</p>
-                <p><strong>Steps to get started:</strong></p>
-                <ol style="text-align: left; display: inline-block;">
-                    <li>Visit <a href="https://aistudio.google.com" target="_blank">Google AI Studio</a></li>
-                    <li>Create account and generate API key</li>
-                    <li>Enter your API key in the sidebar</li>
-                    <li>Click "Initialize AI" to start chatting</li>
+            <div class="notice info center">
+                <h3 style="color: white;">🔑 Google AI API Key Required</h3>
+                <p style="color: white;">To unlock the full potential of the GitLab GenAI Chatbot, please provide your Google AI API Key.</p>
+                <p style="color: white;"><strong>Follow these steps to get started:</strong></p>
+                <ol style="text-align: left; display: inline-block; color: white;">
+                    <li>Visit <a href="https://aistudio.google.com" target="_blank" style="color: white;">Google AI Studio</a> to generate your free API key.</li>
+                    <li>Enter your generated API key in the sidebar's "API Key Setup" section.</li>
+                    <li>Click the "Initialize AI" button to begin chatting!</li>
                 </ol>
-                <p><strong>Free tier:</strong> 1,500 API calls per day</p>
+                <p style="color: white;"><i>A free tier offering 1,500 API calls per day is available.</i></p>
             </div>
             """, unsafe_allow_html=True)
         else:
             st.markdown("""
-            <div style="text-align: center; padding: 2rem; background-color: #f8f9fa; border-radius: 10px;">
+            <div class="notice info center">
                 <h3>👋 Welcome to GitLab GenAI Chatbot!</h3>
                 <p>Click "Initialize AI" in the sidebar to get started.</p>
                 <p>Ask questions about GitLab's culture, processes, and practices.</p>
