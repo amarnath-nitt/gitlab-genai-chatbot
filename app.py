@@ -1,5 +1,5 @@
 """
-Enhanced GitLab GenAI Chatbot with Advanced Features
+GitLab GenAI Chatbot with Advanced Features
 A sophisticated chatbot with dynamic updates, transparency features, and analytics.
 """
 import streamlit as st
@@ -20,13 +20,13 @@ logger = logging.getLogger(__name__)
 
 # Page configuration
 st.set_page_config(
-    page_title="GitLab GenAI Chatbot - Enhanced",
+    page_title="GitLab GenAI Chatbot",
     page_icon="🚀",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Enhanced Custom CSS
+# Custom CSS
 st.markdown("""
 <style>
     :root {
@@ -192,7 +192,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Initialize session state with enhanced features
+# Initialize session state with features
 def initialize_session_state():
     """Initialize all session state variables"""
     defaults = {
@@ -215,7 +215,7 @@ def initialize_session_state():
         st.session_state.conversation_stats['topics_discussed'] = set(st.session_state.conversation_stats['topics_discussed'])
 
 def initialize_ai(api_key=None):
-    """Initialize Google Gemini AI model with enhanced error handling."""
+    """Initialize Google Gemini AI model with error handling."""
     try:
         key_to_use = api_key or st.session_state.custom_api_key or settings.google_api_key
 
@@ -767,7 +767,7 @@ def main():
     initialize_session_state()
 
     # Header
-    st.markdown('<h1 class="main-header">🚀 GitLab GenAI Chatbot - Enhanced</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-header">🚀 GitLab GenAI Chatbot</h1>', unsafe_allow_html=True)
     st.markdown("""
     <div class="subheader">
         Ask questions about GitLab's culture, processes, and practices with enhanced AI features.
