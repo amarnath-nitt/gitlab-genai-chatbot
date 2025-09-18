@@ -237,3 +237,5 @@ local_config.yaml
 # Temporary files
 tmp/
 temp/
+
+.idea/
