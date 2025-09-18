@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 # Page configuration
 st.set_page_config(
-    page_title="GitLab GenAI Chatbot - Enhanced",
+    page_title="GitLab GenAI Chatbot",
     page_icon="🚀",
     layout="wide",
     initial_sidebar_state="expanded"
