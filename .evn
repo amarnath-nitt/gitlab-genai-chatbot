@@ -1,0 +1,20 @@
+# GitLab GenAI Chatbot Configuration
+# Copy this file to .env and fill in your values
+
+# Google AI API Key (Required)
+# Get your free API key from https://aistudio.google.com
+GOOGLE_API_KEY=your_google_api_key_here
+
+# Optional: Advanced Configuration
+ENABLE_WEB_SCRAPING=true
+UPDATE_INTERVAL_DAYS=7
+MAX_SOURCES_PER_RESPONSE=3
+
+# Optional: Performance Settings
+REQUEST_TIMEOUT=10
+CACHE_TTL_SECONDS=3600
+
+# Optional: UI Settings
+DEFAULT_SHOW_SOURCES=true
+DEFAULT_SHOW_CONFIDENCE=true
+DEFAULT_SHOW_FOLLOWUPS=true
