@@ -2,16 +2,15 @@
 GitLab GenAI Chatbot - Simplified Version
 A clean, simple chatbot that uses RAG to answer questions about GitLab.
 """
-import streamlit as st
-import requests
-from bs4 import BeautifulSoup
-import google.generativeai as genai
-from typing import List, Dict, Any
-import os
-from config import settings
-
 # Configure logging
 import logging
+from typing import List, Dict, Any
+
+import google.generativeai as genai
+import streamlit as st
+
+from config import settings
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -27,83 +26,99 @@ st.set_page_config(
 st.markdown("""
 <style>
     :root {
-        --accent: #FC6D26;            /* GitLab orange */
-        --accent-2: #4285f4;          /* Google blue */
-        --text-muted: #666666;
-        --surface: #f8f9fa;
-        --soft: #f0f2f6;
-        --info-bg: #e9f5ff;
-        --info-bd: #b3e0ff;
-        --warn-bg: #fff4e5;
-        --warn-bd: #ffd199;
-        --shadow: 0 2px 6px rgba(0,0,0,0.06);
+        --primary-color: #4a90e2;       /* A more professional blue */
+        --secondary-color: #50e3c2;     /* A vibrant accent color */
+        --text-color: #333333;
+        --background-color: #f4f7f6;
+        --surface-color: #ffffff;
+        --muted-text-color: #888888;
+        --shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
     @media (prefers-color-scheme: dark) {
         :root {
-            --text-muted: #a3a3a3;
-            --surface: #1f2937;
-            --soft: #111827;
-            --info-bg: #0b2537;
-            --info-bd: #1f4a6e;
-            --warn-bg: #3b2a17;
-            --warn-bd: #7a4b15;
-            --shadow: 0 2px 10px rgba(0,0,0,0.25);
+            --primary-color: #58a6ff;
+            --secondary-color: #50e3c2;
+            --text-color: #e6edf3;
+            --background-color: #0d1117;
+            --surface-color: #161b22;
+            --muted-text-color: #8b949e;
+            --shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
     }
 
+    body {
+        color: var(--text-color);
+        background-color: var(--background-color);
+    }
+
     .main-header {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: var(--accent);
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--primary-color);
         text-align: center;
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
     }
 
     .subheader {
         text-align: center;
-        margin-bottom: 2rem;
-        color: var(--text-muted);
+        margin-bottom: 3rem;
+        color: var(--muted-text-color);
+        font-size: 1.1rem;
     }
 
     .chat-message {
-        padding: 1rem;
-        border-radius: 12px;
-        margin-bottom: 1rem;
-        border-left: 4px solid var(--accent);
-        background: var(--surface);
+        padding: 1.5rem;
+        border-radius: 15px;
+        margin-bottom: 1.5rem;
+        border: 1px solid transparent;
+        background: var(--surface-color);
         box-shadow: var(--shadow);
+        transition: all 0.3s ease;
+    }
+
+    .chat-message:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.1);
     }
     
     .user-message {
-        background-color: var(--soft);
-        border-left-color: var(--accent);
+        border-left: 5px solid var(--primary-color);
     }
     
     .assistant-message {
-        background-color: var(--info-bg);
-        border-left-color: var(--accent-2);
+        border-left: 5px solid var(--secondary-color);
     }
     
     .source-link {
-        color: var(--accent);
+        color: var(--primary-color);
         text-decoration: none;
+        font-weight: 600;
     }
-    .source-link:hover { text-decoration: underline; }
+    .source-link:hover { 
+        text-decoration: underline;
+        color: var(--secondary-color);
+    }
 
     /* Reusable notice blocks */
     .notice {
-        padding: 1.25rem;
-        border-radius: 10px;
-        border: 1px solid transparent;
+        padding: 1.5rem;
+        border-radius: 12px;
+        border: 1px solid var(--surface-color);
         box-shadow: var(--shadow);
-        margin-top: 1rem;
+        margin-top: 1.5rem;
+        background-color: var(--surface-color);
     }
     .notice.center { text-align: center; }
-    .notice.info { background: var(--info-bg); border-color: var(--info-bd); }
-    .notice.warning { background: var(--warn-bg); border-color: var(--warn-bd); }
-    .notice.tip { background: var(--surface); border-color: #e5e7eb; }
-    .notice h3, .notice h4 { margin: 0 0 .5rem 0; }
+    .notice.info { 
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border: none;
+    }
+    .notice.info a { color: white; font-weight: 700; }
+    .notice.warning { border-left: 5px solid #f39c12; }
+    .notice.tip { border-left: 5px solid #3498db; }
+    .notice h3, .notice h4 { margin: 0 0 .75rem 0; font-weight: 700; }
 </style>
 """, unsafe_allow_html=True)
 
